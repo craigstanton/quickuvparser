@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 
-
+import click
 import requests
 
-baseurl="https://api.niwa.co.nz/uv/data"
-towns=[["Auckland", 174, -42], ["Hamilton", 174, -41], ["Wellington", 174, -40] ]
-apikey=""
-product=1 # 1 = cloudy sky, 0 = clear sky
-
+TOWNS=[["Auckland", 174, -42], ["Hamilton", 174, -41], ["Wellington", 174, -40]]
 
 
 def get(url, params=None):
@@ -22,22 +18,31 @@ def get(url, params=None):
 #    data = json.loads(url.read().decode())
 #    print(data)
 
-with open("/out/uvi-nzmet.csv","w+") as f:
-  for i in range(len(towns)):
-    print(towns[i])
-    print(i)
-    response = get(baseurl, params={'apikey': apikey, 'lat':towns[i][2], 'long':towns[i][1]})
-    uvjson = response.json()
-    values = uvjson['products'][product]['values']
-    print(values)
-    f.write(towns[i][0] +"\r\n")
-    for j in range(len(values)):
-      print(values[j]['time'])
-      f.write(values[j]['time']+",")
+@click.command()
+@click.option("--baseurl", default="https://api.niwa.co.nz/uv/data", help="API base URL")
+@click.option("--apikey", required=True, help="API key")
+@click.option("--product", default="1", help="Product. 1 = cloudy sky, 0 = clear sky")
+def uvapi(baseurl, apikey, product):
+  with open("/out/uvi-nzmet.csv","w+") as f:
+    for i in range(len(TOWNS)):
+      print(TOWNS[i])
+      print(i)
+      response = get(baseurl, params={'apikey': apikey, 'lat':TOWNS[i][2], 'long':TOWNS[i][1]})
+      uvjson = response.json()
+      values = uvjson['products'][product]['values']
+      print(values)
+      f.write(TOWNS[i][0] + "\r\n")
+      for j in range(len(values)):
+        print(values[j]['time'])
+        f.write(values[j]['time']+",")
 
-    f.write("\r\n")
-    for k in range(len(values)):
-      print(values[k]['value'])
-      f.write(str(values[i]['value'])+",")
-    f.write("\r\n")
-    f.write("\r\n")
+      f.write("\r\n")
+      for k in range(len(values)):
+        print(values[k]['value'])
+        f.write(str(values[i]['value'])+",")
+      f.write("\r\n")
+      f.write("\r\n")
+
+
+if __name__ == "__main__":
+  uvapi()
