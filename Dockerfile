@@ -1,4 +1,4 @@
-FROM python:2.7-alpine
+FROM python:3.7.3-alpine
 
 ADD UVAPIConversion.py /uv/
 ADD requirements.txt /uv/
