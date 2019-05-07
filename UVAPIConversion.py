@@ -25,14 +25,14 @@ def get(url, params=None):
 @click.option("--product", default=1, help="Product. 1 = cloudy sky, 0 = clear sky")
 def uvapi(baseurl, apikey, product):
   with open(join(dirname(__file__), "out/uvi-nzmet.csv"), "w+") as f:
-    for i in range(len(TOWNS)):
-      print(TOWNS[i])
+    for i, (town, long, lat) in enumerate(TOWNS):
+      print(town)
       print(i)
-      response = get(baseurl, params={'apikey': apikey, 'lat':TOWNS[i][2], 'long':TOWNS[i][1]})
+      response = get(baseurl, params={'apikey': apikey, 'lat':lat, 'long':long})
       uvjson = response.json()
       values = uvjson['products'][product]['values']
       print(values)
-      f.write(TOWNS[i][0] + "\r\n")
+      f.write(town + "\r\n")
       for j in range(len(values)):
         print(values[j]['time'])
         f.write(values[j]['time']+",")
