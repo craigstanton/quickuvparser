@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
-import click
-import requests
 from os.path import join, dirname
 
+import click
+import logging
+import requests
+
+
+logging.basicConfig(format="[%(levelname)s] %(message)s", level=logging.DEBUG)
 TOWNS=[["Auckland", 174, -42], ["Hamilton", 174, -41], ["Wellington", 174, -40]]
 
 
@@ -26,20 +30,20 @@ def get(url, params=None):
 def uvapi(baseurl, apikey, product):
   with open(join(dirname(__file__), "out/uvi-nzmet.csv"), "w+") as f:
     for i, (town, long, lat) in enumerate(TOWNS):
-      print(town)
-      print(i)
+      logging.debug(town)
+      logging.debug(i)
       response = get(baseurl, params={'apikey': apikey, 'lat':lat, 'long':long})
       uvjson = response.json()
       values = uvjson['products'][product]['values']
-      print(values)
+      logging.debug(values)
       f.write(town + "\r\n")
       for j in range(len(values)):
-        print(f"{values[j]['time']}")
+        logging.debug(f"{values[j]['time']}")
         f.write(f"{values[j]['time']},")
 
       f.write("\r\n")
       for k in range(len(values)):
-        print(f"{values[k]['value']}")
+        logging.debug(f"{values[k]['value']}")
         f.write(f"{str(values[i]['value'])},")
       f.write("\r\n")
       f.write("\r\n")
