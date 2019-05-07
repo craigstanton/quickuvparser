@@ -12,7 +12,9 @@ product=1 # 1 = cloudy sky, 0 = clear sky
 
 
 
-def get(url, params={}):
+def get(url, params=None):
+  if not params:
+    params = {}
   headers = {'Content-Type' : 'application/json'}
   return requests.get(url, params=params, headers=headers)
 
