@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import click
+import os
 import requests
+
 
 TOWNS=[["Auckland", 174, -42], ["Hamilton", 174, -41], ["Wellington", 174, -40]]
 
@@ -21,9 +23,9 @@ def get(url, params=None):
 @click.command()
 @click.option("--baseurl", default="https://api.niwa.co.nz/uv/data", help="API base URL")
 @click.option("--apikey", required=True, help="API key")
-@click.option("--product", default="1", help="Product. 1 = cloudy sky, 0 = clear sky")
+@click.option("--product", default=1, help="Product. 1 = cloudy sky, 0 = clear sky")
 def uvapi(baseurl, apikey, product):
-  with open("/out/uvi-nzmet.csv","w+") as f:
+  with open(os.path.join(os.path.dirname(__file__), "out/uvi-nzmet.csv"), "w+") as f:
     for i in range(len(TOWNS)):
       print(TOWNS[i])
       print(i)
