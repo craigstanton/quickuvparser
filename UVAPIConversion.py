@@ -28,7 +28,7 @@ def get(url, params=None):
 @click.option("--apikey", required=True, help="API key")
 @click.option("--product", default=1, help="Product. 1 = cloudy sky, 0 = clear sky")
 def uvapi(baseurl, apikey, product):
-  with open(join(dirname(__file__), "out/uvi-nzmet.csv"), "w+") as f:
+  with open(join(dirname(__file__), "/out/uvi-nzmet.csv"), "w+") as f:
     for i, (town, long, lat) in enumerate(TOWNS):
       logging.debug(town)
       logging.debug(i)
