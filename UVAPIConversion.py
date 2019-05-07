@@ -34,13 +34,13 @@ def uvapi(baseurl, apikey, product):
       print(values)
       f.write(town + "\r\n")
       for j in range(len(values)):
-        print(values[j]['time'])
-        f.write(values[j]['time']+",")
+        print(f"{values[j]['time']}")
+        f.write(f"{values[j]['time']},")
 
       f.write("\r\n")
       for k in range(len(values)):
-        print(values[k]['value'])
-        f.write(str(values[i]['value'])+",")
+        print(f"{values[k]['value']}")
+        f.write(f"{str(values[i]['value'])},")
       f.write("\r\n")
       f.write("\r\n")
 
