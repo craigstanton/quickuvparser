@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 
-import argparse
 import requests
-import json
 
 baseurl="https://api.niwa.co.nz/uv/data"
 towns=[["Auckland", 174, -42], ["Hamilton", 174, -41], ["Wellington", 174, -40] ]
