@@ -31,13 +31,13 @@ with open("/out/uvi-nzmet.csv","w+") as f:
     values = uvjson['products'][product]['values']
     print(values)
     f.write(towns[i][0] +"\r\n")
-    for i in range(len(values)):
-      print(values[i]['time'])
-      f.write(values[i]['time']+",")
+    for j in range(len(values)):
+      print(values[j]['time'])
+      f.write(values[j]['time']+",")
 
     f.write("\r\n")
-    for i in range(len(values)):
-      print(values[i]['value'])
+    for k in range(len(values)):
+      print(values[k]['value'])
       f.write(str(values[i]['value'])+",")
     f.write("\r\n")
     f.write("\r\n")
