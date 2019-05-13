@@ -5,6 +5,7 @@ from os.path import join, dirname
 import click
 import logging
 import requests
+import csv
 
 
 logging.basicConfig(format="[%(levelname)s] %(message)s", level=logging.DEBUG)
@@ -28,25 +29,27 @@ def get(url, params=None):
 @click.option("--apikey", required=True, help="API key")
 @click.option("--product", default=1, help="Product. 1 = cloudy sky, 0 = clear sky")
 def uvapi(baseurl, apikey, product):
-  with open(join(dirname(__file__), "/out/uvi-nzmet.csv"), "w+") as f:
-    for i, (town, long, lat) in enumerate(TOWNS):
-      logging.debug(town)
-      logging.debug(i)
-      response = get(baseurl, params={'apikey': apikey, 'lat':lat, 'long':long})
-      uvjson = response.json()
-      values = uvjson['products'][product]['values']
-      logging.debug(values)
-      f.write(town + "\r\n")
-      for j in range(len(values)):
-        logging.debug(f"{values[j]['time']}")
-        f.write(f"{values[j]['time']},")
+  with open(join(dirname(__file__), "/out/uvi-forecasts.csv"), "w+") as f:
+    with open('sites.csv', newline='') as csvfile:
+      sitereader = csv.DictReader(csvfile, delimiter=',', quotechar='\'')
+      for site in sitereader:
+        logging.debug(site['name'])
+        response = get(baseurl, params={'apikey': apikey, 'lat':site['latitude'], 'long':site['longitude']})
+        uvjson = response.json()
+        values = uvjson['products'][product]['values']
+        logging.debug(values)
+        f.write(site['name'] + "\r\n")
+        for j in range(len(values)):
+          logging.debug(f"{values[j]['time']}")
+          f.write(f"{values[j]['time']},")
 
-      f.write("\r\n")
-      for k in range(len(values)):
-        logging.debug(f"{values[k]['value']}")
-        f.write(f"{str(values[i]['value'])},")
-      f.write("\r\n")
-      f.write("\r\n")
+        f.write("\r\n")
+        for k in range(len(values)):
+          logging.debug(f"{values[k]['value']}")
+          f.write(f"{str(values[k]['value'])},")
+          
+        f.write("\r\n")
+        f.write("\r\n")
 
 
 if __name__ == "__main__":
