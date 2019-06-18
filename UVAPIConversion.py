@@ -42,7 +42,7 @@ def uvapi(baseurl, apikey, product):
   with open(join(dirname(__file__), "/out/uvi-forecasts.csv"), "w+") as f:
   
     logging.debug("uvstart =" + uvstart.strftime("%Y-%m-%dT%H:%M:%S%z") + "\r\n")
-    logging.debug"uvend =" + uvend.strftime("%Y-%m-%dT%H:%M:%S%z") + "\r\n")
+    logging.debug("uvend =" + uvend.strftime("%Y-%m-%dT%H:%M:%S%z") + "\r\n")
     
     with open('sites.csv', newline='') as csvfile:
       sitereader = csv.DictReader(csvfile, delimiter=',', quotechar='\'')
